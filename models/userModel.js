@@ -22,6 +22,11 @@ const userSchema = new schema({
             message: "Please enter a valid email"
         }
     },
+    role: {
+        type: Enumerator,
+        values: ['user', 'admin'],
+        default: 'user',
+    },
     password: {
         type: String,
         required: true,

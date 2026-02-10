@@ -63,7 +63,44 @@ const login = async(req, res) => {
     }
 }
 
+// @desc create admin user
+// @route POST /api/auth/create-admin
+// @access Private (only for existing admin users)
+
+const createAdmin = async(req, res) => {
+    const { username, email, password, role } = req.body;
+    if (!username || !email || !password || !role) {
+        return res.status(400).json({ message: "Please fill all the fields" });
+    }
+    if (role !== 'admin') {
+        return res.status(400).json({ message: "Invalid role" });
+    }
+    try {
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: "User already exists" });
+        }
+        const admin = await User.create({
+            username,
+            email,
+            password,
+            role,
+        });
+        res.status(201).json({
+            message: "Admin user created successfully",
+            _id: admin._id,
+            username: admin.username,
+            email: admin.email,
+            role: admin.role
+        });
+        
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
 module.exports = {
     createUser,
-    login
+    login,
+    createAdmin
 };

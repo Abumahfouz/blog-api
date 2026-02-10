@@ -15,6 +15,9 @@ const postSchema = new schema({
         ref: 'User',
         required: true,
     },
+    tags: {
+        type: [String],
+    },
     createdAt: {
         type: Date,
         default: Date.now,

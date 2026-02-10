@@ -4,7 +4,7 @@ const Post = require('../models/Post');
 // @route POST /api/posts
 // @access Private
 const createPost = async(req, res) => {
-    const { title, content } = req.body;
+    const { title, content, tags } = req.body;
     const userID = req.user._id;
     if (!userID) {
         return res.status(401).json({ message: "Unauthorized" });
@@ -16,6 +16,7 @@ const createPost = async(req, res) => {
         const post = await Post.create({
             title,
             content,
+            tags,
             author: req.user._id,
         });
         res.status(201).json(post);
